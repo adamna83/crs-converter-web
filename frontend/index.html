@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRS Converter Web App</title>
+    <link rel="stylesheet" href="/node_modules/maplibre-gl/dist/maplibre-gl.css" />
+  </head>
+  <body>
+    <header id="app-header">
+      <h1>CRS Converter</h1>
+      <span id="header-status" class="status-offline">connecting…</span>
+    </header>
+
+    <main id="app-main">
+      <section id="panel">
+        <nav id="tabs">
+          <button id="tab-single" class="tab active" type="button">Single point</button>
+          <button id="tab-batch" class="tab" type="button">Batch CSV</button>
+        </nav>
+
+        <!-- Single-point converter -->
+        <div id="view-single" class="view active">
+          <div class="field">
+            <label for="src-picker">Source CRS</label>
+            <div class="crs-picker">
+              <input id="src-picker" type="text" autocomplete="off" placeholder="Search name or EPSG code…" />
+              <ul id="src-results" class="crs-results" hidden></ul>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="dst-picker">Target CRS</label>
+            <div class="crs-picker">
+              <input id="dst-picker" type="text" autocomplete="off" placeholder="Search name or EPSG code…" />
+              <ul id="dst-results" class="crs-results" hidden></ul>
+            </div>
+          </div>
+
+          <div class="field" id="datum-field" hidden>
+            <label for="datum-op">Datum transformation</label>
+            <select id="datum-op"></select>
+            <div id="datum-detail" class="hint"></div>
+          </div>
+
+          <div class="row">
+            <div class="field">
+              <label for="in-x">X / Easting</label>
+              <input id="in-x" type="number" step="any" value="422222.000" />
+            </div>
+            <div class="field">
+              <label for="in-y">Y / Northing</label>
+              <input id="in-y" type="number" step="any" value="555555.000" />
+            </div>
+          </div>
+
+          <button id="btn-convert" class="primary" type="button">Convert</button>
+
+          <div id="result" hidden>
+            <h2>Result</h2>
+            <p class="big-result" id="result-coords"></p>
+            <p class="hint" id="result-op"></p>
+          </div>
+        </div>
+
+        <!-- Batch CSV converter -->
+        <div id="view-batch" class="view">
+          <div class="field">
+            <label for="batch-file">CSV file</label>
+            <input id="batch-file" type="file" accept=".csv,.tsv,.txt" />
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="batch-src">Source CRS</label>
+              <input id="batch-src" type="text" value="EPSG:24548" />
+            </div>
+            <div class="field">
+              <label for="batch-dst">Target CRS</label>
+              <input id="batch-dst" type="text" value="EPSG:32648" />
+            </div>
+          </div>
+          <p class="hint">Auto-detects ID / X / Y columns. Override if needed:</p>
+          <div class="row">
+            <div class="field">
+              <label for="batch-id-col">ID column (optional)</label>
+              <input id="batch-id-col" type="text" placeholder="auto" />
+            </div>
+            <div class="field">
+              <label for="batch-x-col">X column (optional)</label>
+              <input id="batch-x-col" type="text" placeholder="auto" />
+            </div>
+            <div class="field">
+              <label for="batch-y-col">Y column (optional)</label>
+              <input id="batch-y-col" type="text" placeholder="auto" />
+            </div>
+          </div>
+          <button id="btn-batch" class="primary" type="button">Transform file</button>
+
+          <div id="batch-result" hidden>
+            <h2>Summary</h2>
+            <p id="batch-summary"></p>
+            <button id="btn-download" type="button">Download CSV</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="map-wrap">
+        <div id="map"></div>
+        <div id="map-legend">
+          <span class="legend-src">Source</span>
+          <span class="legend-dst">Target</span>
+          <span class="legend-batch">Batch</span>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" hidden></div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
