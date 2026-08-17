@@ -17,6 +17,7 @@ const inY = document.getElementById('in-y');
 const btnConvert = document.getElementById('btn-convert');
 const resultBox = document.getElementById('result');
 const resultCoords = document.getElementById('result-coords');
+const resultLL = document.getElementById('result-ll');
 const resultOp = document.getElementById('result-op');
 
 /** @type {Array} */
@@ -100,7 +101,9 @@ async function convert() {
   try {
     const res = await transformPoint(source, target, x, y, opIndex);
     const r = res.result;
+    const tWgs = res.target_wgs84;
     resultCoords.textContent = `${fmt(r.x)} , ${fmt(r.y)}`;
+    resultLL.textContent = `${toDMS(tWgs.lon, false)} , ${toDMS(tWgs.lat, true)}`;
     resultOp.textContent = res.chosen_operation;
     resultBox.hidden = false;
     plotSingle(res.source_wgs84, res.target_wgs84);
@@ -116,6 +119,17 @@ function fmt(v) {
   if (!Number.isFinite(v)) return String(v);
   const rounded = Math.abs(v) >= 1000 ? v.toFixed(3) : v.toPrecision(10);
   return Number(rounded).toLocaleString('en-US');
+}
+
+function toDMS(dec, isLat) {
+  if (!Number.isFinite(dec)) return String(dec);
+  const dir = dec >= 0 ? (isLat ? 'N' : 'E') : (isLat ? 'S' : 'W');
+  let abs = Math.abs(dec);
+  const d = Math.floor(abs);
+  abs = (abs - d) * 60;
+  const m = Math.floor(abs);
+  const s = ((abs - m) * 60).toFixed(1);
+  return `${d}\u00b0 ${String(m).padStart(2, '0')}\' ${s.padStart(4, '0')}" ${dir}`;
 }
 
 function initDefaults() {
