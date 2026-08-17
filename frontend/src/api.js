@@ -49,6 +49,9 @@ export function transformBatch(file, form) {
   fd.append('file', file);
   fd.append('source', form.source);
   fd.append('target', form.target);
+  if (form.operation_index !== null && form.operation_index !== undefined) {
+    fd.append('operation_index', String(form.operation_index));
+  }
   if (form.id_col) fd.append('id_col', form.id_col);
   if (form.x_col) fd.append('x_col', form.x_col);
   if (form.y_col) fd.append('y_col', form.y_col);

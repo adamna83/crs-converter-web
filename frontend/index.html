@@ -70,15 +70,24 @@
             <label for="batch-file">CSV file</label>
             <input id="batch-file" type="file" accept=".csv,.tsv,.txt" />
           </div>
-          <div class="row">
-            <div class="field">
-              <label for="batch-src">Source CRS</label>
-              <input id="batch-src" type="text" value="EPSG:24548" />
+          <div class="field">
+            <label for="batch-src-picker">Source CRS</label>
+            <div class="crs-picker">
+              <input id="batch-src-picker" type="text" autocomplete="off" placeholder="Search name or EPSG code…" />
+              <ul id="batch-src-results" class="crs-results" hidden></ul>
             </div>
-            <div class="field">
-              <label for="batch-dst">Target CRS</label>
-              <input id="batch-dst" type="text" value="EPSG:32648" />
+          </div>
+          <div class="field">
+            <label for="batch-dst-picker">Target CRS</label>
+            <div class="crs-picker">
+              <input id="batch-dst-picker" type="text" autocomplete="off" placeholder="Search name or EPSG code…" />
+              <ul id="batch-dst-results" class="crs-results" hidden></ul>
             </div>
+          </div>
+          <div class="field" id="batch-datum-field" hidden>
+            <label for="batch-datum-op">Datum transformation</label>
+            <select id="batch-datum-op"></select>
+            <div id="batch-datum-detail" class="hint"></div>
           </div>
           <p class="hint">Auto-detects ID / X / Y columns. Override if needed:</p>
           <div class="row">
